@@ -2,9 +2,31 @@ import pandas as pd
 import matplotlib.pyplot as matplot
 import numpy as py
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 from PIL import Image, ImageTk
 import csv
+
+
+def browse_file():
+    # Open a file dialog to select a CSV file
+    file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
+
+    if file_path:  # If a file is selected
+        try:
+            # Read the CSV file using pandas
+            data = pd.read_csv(file_path)
+
+            # For demo purposes, print the content of the CSV file
+            print(data)
+
+            # You can process the data as needed (e.g., display it in a table or process grades)
+            messagebox.showinfo("File Loaded", "CSV file has been successfully loaded!")
+
+        except Exception as e:
+            # In case of an error while reading the file
+            messagebox.showerror("Error", f"An error occurred: {str(e)}")
+    else:
+        messagebox.showwarning("No file selected", "No file was selected.")
 
 
 def clean_window():
@@ -48,22 +70,9 @@ def submit_user_load(name_entry, password_entry):
     if load_user(name, password):
         messagebox.showinfo("Login Successful", "Welcome back!")
         # Proceed to the next window after successful login
-        handle_dashboard()
+        browse_file()
     else:
         messagebox.showwarning("Invalid Login", "Incorrect username or password!")
-
-
-def handle_dashboard():
-    # Handle the dashboard or main screen after successful login
-    dashboard = tk.Toplevel(root)
-    dashboard.geometry("400x300")
-    dashboard.title("Dashboard")
-
-    label = tk.Label(dashboard, text="Welcome to the Dashboard!")
-    label.pack(pady=50)
-
-    # Add more widgets for the dashboard if needed
-    dashboard.mainloop()
 
 
 def handle_signup_form():
